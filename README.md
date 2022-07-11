@@ -1,9 +1,9 @@
 # Building Fully Static Binaries
 
-This Dockerfile is based on alpine linux which uses Musl instead of Glibc as c library. Musl allows fully static builds.
+This Dockerfile is based on Alpine Linux, which uses Musl instead of Glibc as c library. Musl allows fully static builds.
 
 CLion supports Docker toolchains for compiling and debugging.
-Using this a container from this Dockerfile, you make sure that you **do not rely on any system libraries implicitly**.
+Using this container from this Dockerfile, you make sure that you **do not rely on any system libraries implicitly**.
 
 It contains:
 
@@ -29,19 +29,19 @@ docker build --build-arg CONAN_USER=your_username --build-arg CONAN_PW=your_pass
 
 ## Linking Fails
 
-It seems like some packages from conan central do not link correctly alpine. The easies workaround is to build all of
+It seems like some packages from Conan Central do not link correctly for alpine. The easiest workaround is to build all of
 them locally (in the container).
 This can be done, e.g. with:
 
 ```dockerfile
-# build and cache dependencies via conan
+# build and cache dependencies via Conan
 RUN mkdir -p "/home/${USER}/conan_cache"
 WORKDIR /home/${USER}/conan_cache
 COPY --chown="$USER" conanfile.txt .
 RUN conan install . --build=* --profile default
 ```
 
-Make sure that the profiles are exactly the same between conan_cache and your actual build.
+The important part here is `--build=*`. Make sure that the profiles are exactly the same between conan_cache and your actual build.
 
 # CLion Integration
 
